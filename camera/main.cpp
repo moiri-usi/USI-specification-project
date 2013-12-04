@@ -187,8 +187,10 @@ int sc_main (int argc , char *argv[]) {
     test1.reference(stimulus_dup2);
     test1.data(result_dup2);
 
-
-
+    sc_trace_file *tracefile;
+    tracefile = sc_create_vcd_trace_file("test");
+    sc_trace(tracefile, data_rl_enc_out, "data_rl_enc_out");
+    sc_trace(tracefile, data_bit_pack_out, "data_bp_out");
 
     sc_start(200000, SC_NS);
 
