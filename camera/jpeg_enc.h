@@ -107,14 +107,14 @@ SC_MODULE(jpeg_enc) {
             zz_enc_1.clk(clk);
             zz_enc_1.output(int_zz_rl_enc);
 
-            //zz_enc_1.input(quantize_zz_out);
-            //zz_enc_1.output(zz_enc_out);
+//            zz_enc_1.input(quantize_zz_out);
+//            zz_enc_1.output(zz_enc_out);
 
-            //ff2p_zz_rl_enc.input(zz_enc_out);
-            //ff2p_zz_rl_enc.clk(clk);
-            //ff2p_zz_rl_enc.ask(bool_zz_rl_enc_ask);
-            //ff2p_zz_rl_enc.ready(bool_zz_rl_enc_ready);
-            //ff2p_zz_rl_enc.output(int_zz_rl_enc);
+//            ff2p_zz_rl_enc.input(zz_enc_out);
+//            ff2p_zz_rl_enc.clk(clk);
+//            ff2p_zz_rl_enc.ask(bool_zz_rl_enc_ask);
+//            ff2p_zz_rl_enc.ready(bool_zz_rl_enc_ready);
+//            ff2p_zz_rl_enc.output(int_zz_rl_enc);
 
             p2ff_zz_rl_enc.input(int_zz_rl_enc);
             p2ff_zz_rl_enc.clk(clk);
