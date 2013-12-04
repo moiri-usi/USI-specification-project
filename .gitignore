@@ -16,3 +16,4 @@ camera/Makefile
 camera/.syntastic_custom_includes
 
 test
+result.pgm
