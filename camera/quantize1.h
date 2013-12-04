@@ -10,9 +10,12 @@ SC_MODULE(quantize1) {
     sc_in<float>        input;
     sc_in<bool>         clk;
     sc_in<bool>         ready_i;
+    sc_out<bool>        ready_o;
     sc_out<bool>        ask_i;
+    sc_in<bool>         ask_o;
     //my_fifo_in<float>    input;
-    my_fifo_out<int>  output;
+    //my_fifo_out<int>  output;
+    sc_out<int>         output;
 
     int* quantization;
 
