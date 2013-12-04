@@ -47,7 +47,7 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_quantize_zz_ready;
 
 //    FF2P<int> ff2p_zz_rl_enc;
-    P2FF<int> p2ff_zz_rl_enc;
+//    P2FF<int> p2ff_zz_rl_enc;
     sc_signal<int> int_zz_rl_enc;
     sc_signal<bool> bool_zz_rl_enc_ask;
     sc_signal<bool> bool_zz_rl_enc_ready;
@@ -62,7 +62,7 @@ SC_MODULE(jpeg_enc) {
 //        p2ff_quantize_zz("p2ff_quantize_zz"),
         zz_enc_1("zz_enc_1"),
 //        ff2p_zz_rl_enc("ff2p_zz_rl_enc"),
-        p2ff_zz_rl_enc("p2ff_zz_rl_enc"),
+//        p2ff_zz_rl_enc("p2ff_zz_rl_enc"),
         rl_enc_1("rl_enc_1"),
         r2b_out("r2b_out",1),
         dct_out("dct_out",1),
@@ -116,13 +116,17 @@ SC_MODULE(jpeg_enc) {
 //            ff2p_zz_rl_enc.ready(bool_zz_rl_enc_ready);
 //            ff2p_zz_rl_enc.output(int_zz_rl_enc);
 
-            p2ff_zz_rl_enc.input(int_zz_rl_enc);
-            p2ff_zz_rl_enc.clk(clk);
-            p2ff_zz_rl_enc.ask(bool_zz_rl_enc_ask);
-            p2ff_zz_rl_enc.ready(bool_zz_rl_enc_ready);
-            p2ff_zz_rl_enc.output(zz_rl_enc_out);
+//            p2ff_zz_rl_enc.input(int_zz_rl_enc);
+//            p2ff_zz_rl_enc.clk(clk);
+//            p2ff_zz_rl_enc.ask(bool_zz_rl_enc_ask);
+//            p2ff_zz_rl_enc.ready(bool_zz_rl_enc_ready);
+//            p2ff_zz_rl_enc.output(zz_rl_enc_out);
 
-            rl_enc_1.input(zz_rl_enc_out);
+//            rl_enc_1.input(zz_rl_enc_out);
+            rl_enc_1.input(int_zz_rl_enc);
+            rl_enc_1.clk(clk);
+            rl_enc_1.ask_i(bool_zz_rl_enc_ask);
+            rl_enc_1.ready_i(bool_zz_rl_enc_ready);
             rl_enc_1.output(output);
 
         }

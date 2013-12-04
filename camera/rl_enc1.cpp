@@ -8,12 +8,23 @@ void rl_enc1::process() {
 
     while (1) {
         // read and write DC value
-        output.write(input.read());
+        ask_i.write(true);
+        wait();
+        while (!ready_i.read()) wait();
+        value = input.read();
+        ask_i.write(false);
+        wait();
+        output.write(value);
 
         count = 0;
 
         for( k = 1 ; k < 64 ; k++ ) {
+            ask_i.write(true);
+            wait();
+            while (!ready_i.read()) wait();
             value = input.read();
+            ask_i.write(false);
+            wait();
             if ( value == 0 ) {
                 count++;
             }
