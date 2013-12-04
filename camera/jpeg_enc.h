@@ -6,7 +6,7 @@
 #include        "dct.h"
 #include        "quantize1.h"
 #include        "zz_enc1.h"
-#include        "rl_enc.h"
+#include        "rl_enc1.h"
 #include        "P2FF.h"
 #include        "FF2P.h"
 
@@ -32,7 +32,7 @@ SC_MODULE(jpeg_enc) {
     dct dct_1;
     quantize1 quant_1;
     zz_enc1 zz_enc_1;
-    rl_enc rl_enc_1;
+    rl_enc1 rl_enc_1;
 
     FF2P<float> ff2p_dct_quantize;
     fifo_stat<float>    dct_quantize_out;
