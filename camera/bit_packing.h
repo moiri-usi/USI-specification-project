@@ -1,6 +1,6 @@
 /*  bit_packing.h */
-#ifndef _RL_DEC
-#define _RL_DEC
+#ifndef _BIT_PACK
+#define _BIT_PACK
 #include <systemc.h>
 #include "add2systemc.h"
 
