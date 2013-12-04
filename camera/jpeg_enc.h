@@ -7,6 +7,7 @@
 #include        "quantize1.h"
 #include        "zz_enc1.h"
 #include        "rl_enc1.h"
+#include        "bit_packing.h"
 #include        "P2FF.h"
 #include        "FF2P.h"
 
@@ -53,6 +54,8 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_zz_rl_enc_ready;
     fifo_stat<int> zz_rl_enc_out;
 
+    FF2P<int> ff2p_rl_enc_bit("ff2p_rl_enc_bit");
+
     jpeg_enc(sc_module_name _name, int* _quantization, int _maxwidth):
         sc_module(_name),
         r2b_1("r2b_1",_maxwidth),
@@ -64,6 +67,7 @@ SC_MODULE(jpeg_enc) {
 //        ff2p_zz_rl_enc("ff2p_zz_rl_enc"),
 //        p2ff_zz_rl_enc("p2ff_zz_rl_enc"),
         rl_enc_1("rl_enc_1"),
+        ff2p_rl_enc_bit("ff2p_rl_enc_bit"),
         r2b_out("r2b_out",1),
         dct_out("dct_out",1),
         dct_quantize_out("dct_quantize_out",1),
@@ -93,12 +97,6 @@ SC_MODULE(jpeg_enc) {
             quant_1.ready_o(bool_quantize_zz_ready);
             quant_1.ask_o(bool_quantize_zz_ask);
 
-            //p2ff_quantize_zz.input(int_quantize_zz);
-            //p2ff_quantize_zz.clk(clk);
-            //p2ff_quantize_zz.output(quantize_zz_out);
-            //p2ff_quantize_zz.ask(bool_quantize_zz_ask);
-            //p2ff_quantize_zz.ready(bool_quantize_zz_ready);
-
             zz_enc_1.input(int_quantize_zz);
             zz_enc_1.ask_i(bool_quantize_zz_ask);
             zz_enc_1.ready_i(bool_quantize_zz_ready);
@@ -107,27 +105,26 @@ SC_MODULE(jpeg_enc) {
             zz_enc_1.clk(clk);
             zz_enc_1.output(int_zz_rl_enc);
 
-//            zz_enc_1.input(quantize_zz_out);
-//            zz_enc_1.output(zz_enc_out);
-
-//            ff2p_zz_rl_enc.input(zz_enc_out);
-//            ff2p_zz_rl_enc.clk(clk);
-//            ff2p_zz_rl_enc.ask(bool_zz_rl_enc_ask);
-//            ff2p_zz_rl_enc.ready(bool_zz_rl_enc_ready);
-//            ff2p_zz_rl_enc.output(int_zz_rl_enc);
-
-//            p2ff_zz_rl_enc.input(int_zz_rl_enc);
-//            p2ff_zz_rl_enc.clk(clk);
-//            p2ff_zz_rl_enc.ask(bool_zz_rl_enc_ask);
-//            p2ff_zz_rl_enc.ready(bool_zz_rl_enc_ready);
-//            p2ff_zz_rl_enc.output(zz_rl_enc_out);
-
-//            rl_enc_1.input(zz_rl_enc_out);
             rl_enc_1.input(int_zz_rl_enc);
             rl_enc_1.clk(clk);
             rl_enc_1.ask_i(bool_zz_rl_enc_ask);
             rl_enc_1.ready_i(bool_zz_rl_enc_ready);
-            rl_enc_1.output(output);
+            rl_enc_1.output(rl_enc_out);
+
+            ff2p_rl_enc_bit.input(rl_enc_out);
+            ff2p_rl_enc_bit.clk(clk);
+            ff2p_rl_enc_bit.ask(bool_rl_enc_bit_ask);
+            ff2p_rl_enc_bit.ready(bool_rl_enc_bit_ready);
+            ff2p_rl_enc_bit.input(rl_enc_bit_out);
+
+            bit_packing bit_packing_1("bit_packing_1");
+            bit_packing_1.input(rl_enc_bit_out);
+            bit_packing_1.ask_i(bool_rl_enc_bit_ask);
+            bit_packing_1.ask_o();
+            bit_packing_1.ready_i(bool_rl_enc_bit_ready);
+            bit_packing_1.ready_o();
+            bit_packing_1.clk(clk1);
+            bit_packing_1.output();
 
         }
 

@@ -14,7 +14,6 @@
 #include    "jpeg_dec.h"
 #include    "jpeg_enc.h"
 
-#include    "bit_packing.h"
 #include    "bit_unpacking.h"
 
 #define MAXWIDTH 1024
