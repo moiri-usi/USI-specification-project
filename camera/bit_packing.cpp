@@ -1,8 +1,6 @@
 #include "bit_packing.h"
 
 void bit_packing::process() {
-
-    int     count;
     sc_bv<VAL_WIDTH>    value;
     sc_bv<RL_WIDTH>     rl;
     sc_bv<BUS_WIDTH>    buf;
@@ -11,9 +9,9 @@ void bit_packing::process() {
 
     while (1) {
         buf_idx = 0;
-        value = static_cast<sc_bv<VAL_WIDTH> >(input.read());
-        while (value.to_int() < 63) {
+        do {
             // fill value bits into output bits
+            value = static_cast<sc_bv<VAL_WIDTH> >(input.read());
             for (i = 0; i < VAL_WIDTH; i++) {
                 if (buf_idx < BUS_WIDTH) {
                     buf[buf_idx] = value[i];
@@ -42,8 +40,8 @@ void bit_packing::process() {
                 }
                 buf_idx++;
             }
-            value = static_cast<sc_bv<VAL_WIDTH> >(input.read());
         }
+        while (rl.to_int() < 63);
 
         for (i = buf_idx; i < BUS_WIDTH; i++) {
             buf[i] = 0;

@@ -75,7 +75,8 @@ int sc_main (int argc , char *argv[]) {
     fifo_stat<int>  result_dup1("result_dup1",1);
     fifo_stat<int>  result_dup2("result_dup2",1);
     fifo_stat<int>  data_rl_enc_out_ff("data_rl_enc_out_ff",1);
-    fifo_stat<sc_bv<8> >  data_bit_pack_out("data_bit_pack_out",1);
+    fifo_stat<sc_int<8> >  data_bit_pack_out("data_bit_pack_out",1);
+    //fifo_stat<int>  data_bit_pack_out("data_bit_pack_out",1);
     fifo_stat<int>  data_bit_unpack_out_ff("data_bit_unpack_out_ff",1);
 
     // processing of command-line arguments
