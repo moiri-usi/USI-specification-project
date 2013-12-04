@@ -40,13 +40,13 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_dct_quantize_ask;
     sc_signal<bool> bool_dct_quantize_ready;
 
-    P2FF<int> p2ff_quantize_zz;
+//    P2FF<int> p2ff_quantize_zz;
     fifo_stat<int>    quantize_zz_out;
     sc_signal<int>  int_quantize_zz;
     sc_signal<bool> bool_quantize_zz_ask;
     sc_signal<bool> bool_quantize_zz_ready;
 
-    FF2P<int> ff2p_zz_rl_enc;
+//    FF2P<int> ff2p_zz_rl_enc;
     P2FF<int> p2ff_zz_rl_enc;
     sc_signal<int> int_zz_rl_enc;
     sc_signal<bool> bool_zz_rl_enc_ask;
@@ -59,9 +59,9 @@ SC_MODULE(jpeg_enc) {
         dct_1("dct_1"),
         ff2p_dct_quantize("ff2p_dct_quantize_"),
         quant_1("quant_1",_quantization),
-        p2ff_quantize_zz("p2ff_quantize_zz"),
+//        p2ff_quantize_zz("p2ff_quantize_zz"),
         zz_enc_1("zz_enc_1"),
-        ff2p_zz_rl_enc("ff2p_zz_rl_enc"),
+//        ff2p_zz_rl_enc("ff2p_zz_rl_enc"),
         p2ff_zz_rl_enc("p2ff_zz_rl_enc"),
         rl_enc_1("rl_enc_1"),
         r2b_out("r2b_out",1),
@@ -106,6 +106,9 @@ SC_MODULE(jpeg_enc) {
             zz_enc_1.ready_o(bool_zz_rl_enc_ready);
             zz_enc_1.clk(clk);
             zz_enc_1.output(int_zz_rl_enc);
+
+            //zz_enc_1.input(quantize_zz_out);
+            //zz_enc_1.output(zz_enc_out);
 
             //ff2p_zz_rl_enc.input(zz_enc_out);
             //ff2p_zz_rl_enc.clk(clk);
