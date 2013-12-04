@@ -8,26 +8,20 @@ void zz_enc1::process()
 	int		block[64];
 
 
-	ask_i.write(false); i=0; wait();
+	ask_i.write(false); i=0; wait(); ready_o.write(false);
 	while(1) {
-		 cout << "hello zig zag" << endl;
+
 i=0;
 		while(i<=63)
 		{	ask_i.write(true);
 			while(ready_i.read()==false){wait();}
-			temp_block[i]=input.read(); cout <<" i: " <<  i << endl;
+			temp_block[i]=input.read();
 			i=i+1;
 			ask_i.write(false);
 			wait();
 		}
 
-		//read in the blocks for 8 lines
-	  /*  for ( i = 0 ; i < 8 ; i ++) {
-			for ( j = 0 ; j < 8 ; j++ ) {
-				temp_block[8 * i + j ]= input.read();
-			}
-		}
-*/
+
 		i = 0 , j = -1 , k = 0;
 
 		for ( l = 0 ; l < 4 ; l++ ) {
@@ -56,9 +50,26 @@ i=0;
 		i-- , j += 2;
 		block[k] = temp_block[i*8+j];
 
-		for ( i = 0 ; i < 64 ; ++i ) {
+		i=0;
+
+
+		while (i<=63)
+		{
+		 while (ask_o.read()==false)
+		 {;wait(); }
+
+		   output.write(block[i]);
+		   ready_o.write(true); wait();
+
+
+		   ready_o.write(false);  wait();
+		   i++;
+	}
+
+		/*for ( i = 0 ; i < 64 ; ++i ) {
 			output.write (block[i]);
-		}
+
+		}*/
 	}
 }
 
