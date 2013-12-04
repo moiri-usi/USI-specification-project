@@ -197,7 +197,7 @@ int sc_main (int argc , char *argv[]) {
     sc_trace(tracefile, data_rl_enc_out, "data_rl_enc_out");
     sc_trace(tracefile, data_bit_pack_out, "data_bp_out");
 
-    sc_start(200000, SC_NS);
+    sc_start(2000000, SC_NS);
 
     return 0;
 }
