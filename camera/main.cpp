@@ -129,15 +129,18 @@ int sc_main (int argc , char *argv[]) {
     jpeg_enc_1.output(data_rl_enc_out);
     jpeg_enc_1.clk(clk1);
 
-    P2FFC<int, sc_int<32> > p2ff1("p2ff1");
-    p2ff1.clk(clk1);
-    p2ff1.input(data_rl_enc_out);
-    p2ff1.ask(ask_rl_enc_out);
-    p2ff1.ready(ready_rl_enc_out);
-    p2ff1.output(data_rl_enc_out_ff);
+//    P2FFC<int, sc_int<32> > p2ff1("p2ff1");
+//    p2ff1.clk(clk1);
+//    p2ff1.input(data_rl_enc_out);
+//    p2ff1.ask(ask_rl_enc_out);
+//    p2ff1.ready(ready_rl_enc_out);
+//    p2ff1.output(data_rl_enc_out_ff);
 
     bit_packing bit_packing_1("bit_packing_1");
-    bit_packing_1.input(data_rl_enc_out_ff);
+    bit_packing_1.input(data_rl_enc_out);
+    bit_packing_1.ask_i(ask_rl_enc_out);
+    bit_packing_1.ready_i(ready_rl_enc_out);
+    bit_packing_1.clk(clk1);
     bit_packing_1.output(data_bit_pack_out_ff);
 
     FF2P<sc_int<8> > ff2p1("ff2p1");
@@ -147,7 +150,7 @@ int sc_main (int argc , char *argv[]) {
     ff2p1.ready(ready_bit_pack_out);
     ff2p1.output(data_bit_pack_out);
 
-    P2FF<sc_int<8> > p2ff2("p2ff1");
+    P2FF<sc_int<8> > p2ff2("p2ff2");
     p2ff2.clk(clk1);
     p2ff2.input(data_bit_pack_out);
     p2ff2.ask(ask_bit_pack_out);
@@ -158,7 +161,7 @@ int sc_main (int argc , char *argv[]) {
     bit_unpacking_1.input(data_bit_pack_out_ff_ff);
     bit_unpacking_1.output(data_bit_unpack_out_ff);
 
-    FF2PC<int, sc_int<32> > ff2p2("ff2p1");
+    FF2PC<int, sc_int<32> > ff2p2("ff2p2");
     ff2p2.clk(clk1);
     ff2p2.input(data_bit_unpack_out_ff);
     ff2p2.ask(ask_bit_unpak_out);

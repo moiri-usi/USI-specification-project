@@ -10,7 +10,11 @@
 
 SC_MODULE(bit_packing){
 
-    my_fifo_in<int>                 input;
+    sc_in<sc_int<32> >      input;
+    sc_in<bool>     ready_i;
+    sc_in<bool>     clk;
+    sc_out<bool>    ask_i;
+    //my_fifo_in<int>                 input;
     my_fifo_out<sc_int<BUS_WIDTH> >  output;
 
     SC_HAS_PROCESS(bit_packing);
@@ -18,6 +22,7 @@ SC_MODULE(bit_packing){
     bit_packing(sc_module_name name):
         sc_module(name) {
             SC_THREAD(process);
+            sensitive << clk.pos();
         }
 
     void process();

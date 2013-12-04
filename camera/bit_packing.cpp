@@ -10,8 +10,19 @@ void bit_packing::process() {
     while (1) {
         buf_idx = 0;
         do {
+            ask_i.write(true);
+            wait();
             // fill value bits into output bits
+            while (!ready_i.read()) wait();
             value = static_cast<sc_bv<VAL_WIDTH> >(input.read());
+            ask_i.write(false);
+            wait();
+            ask_i.write(true);
+            wait();
+            while (!ready_i.read()) wait();
+            rl = static_cast<sc_bv<RL_WIDTH> >(input.read());
+            ask_i.write(false);
+            wait();
             for (i = 0; i < VAL_WIDTH; i++) {
                 if (buf_idx < BUS_WIDTH) {
                     buf[buf_idx] = value[i];
@@ -25,7 +36,6 @@ void bit_packing::process() {
                 }
                 buf_idx++;
             }
-            rl = static_cast<sc_bv<RL_WIDTH> >(input.read());
             // fill rl bits into output bits
             for (i = 0; i < RL_WIDTH; i++) {
                 if (buf_idx < BUS_WIDTH) {
