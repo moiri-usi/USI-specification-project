@@ -4,7 +4,7 @@
 
 #include        "r2b.h"
 #include        "dct.h"
-#include        "quantize.h"
+#include        "quantize1.h"
 #include        "zz_enc.h"
 #include        "rl_enc.h"
 #include        "P2FF.h"
@@ -31,14 +31,16 @@ SC_MODULE(jpeg_enc) {
     /* internal modules */
     r2b r2b_1;
     dct dct_1;
-    quantize quant_1;
+    quantize1 quant_1;
     zz_enc zz_enc_1;
     rl_enc rl_enc_1;
 
 #if block1
-    P2FF<float> p2ff_dct_quantize;
+    //P2FFC<sc_fixed<23,13>, float> p2ff_dct_quantize;
+    //P2FF<float> p2ff_dct_quantize;
     FF2P<float> ff2p_dct_quantize;
     // fifo_stat<float>  fifo_dct_quantize;
+    //fifo_stat<sc_fixed<23, 13> >    dct_quantize_out;
     fifo_stat<float>    dct_quantize_out;
     sc_signal<float>  float_dct_quantize;
     sc_signal<bool> bool_dct_quantize_ask;
@@ -80,7 +82,7 @@ SC_MODULE(jpeg_enc) {
         zz_enc_1("zz_enc_1"),
         rl_enc_1("rl_enc_1")
 #if block1
-        ,p2ff_dct_quantize("p2ff_dct_quantize_"),
+        ,//p2ff_dct_quantize("p2ff_dct_quantize_"),
         ff2p_dct_quantize("ff2p_dct_quantize_"),
         dct_quantize_out("dct_quantize_out",1)
 #endif
@@ -111,12 +113,16 @@ SC_MODULE(jpeg_enc) {
             ff2p_dct_quantize.ask(bool_dct_quantize_ask);
             ff2p_dct_quantize.ready(bool_dct_quantize_ready);
 
-            p2ff_dct_quantize.clk(clk);
-            p2ff_dct_quantize.input(float_dct_quantize);
-            p2ff_dct_quantize.ask(bool_dct_quantize_ask);
-            p2ff_dct_quantize.ready(bool_dct_quantize_ready);
-            p2ff_dct_quantize.output(dct_quantize_out);
-            quant_1.input(dct_quantize_out);
+     //       p2ff_dct_quantize.clk(clk);
+     //       p2ff_dct_quantize.input(float_dct_quantize);
+     //       p2ff_dct_quantize.ask(bool_dct_quantize_ask);
+     //       p2ff_dct_quantize.ready(bool_dct_quantize_ready);
+     //       p2ff_dct_quantize.output(dct_quantize_out);
+     //       quant_1.input(dct_quantize_out);
+            quant_1.input(float_dct_quantize);
+            quant_1.clk(clk);
+            quant_1.ready_i(bool_dct_quantize_ready);
+            quant_1.ask_i(bool_dct_quantize_ask);
 #endif
 
 
