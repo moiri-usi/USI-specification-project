@@ -11,6 +11,7 @@ void bit_packing::process() {
         buf_idx = 0;
         do {
             ask_i.write(true);
+            ready_o.write(false);
             wait();
             // fill value bits into output bits
             while (!ready_i.read()) wait();
@@ -29,7 +30,12 @@ void bit_packing::process() {
                 }
                 else {
                     if (buf_idx == BUS_WIDTH) {
+                        ready_o.write(false);
+                        wait();
+                        while (!ask_o.read()) wait();
                         output.write(buf);
+                        ready_o.write(true);
+                        wait();
                         buf_idx = 0;
                     }
                     buf[buf_idx] = value[i];
@@ -43,7 +49,12 @@ void bit_packing::process() {
                 }
                 else {
                     if (buf_idx == BUS_WIDTH) {
+                        ready_o.write(false);
+                        wait();
+                        while (!ask_o.read()) wait();
                         output.write(buf);
+                        ready_o.write(true);
+                        wait();
                         buf_idx = 0;
                     }
                     buf[buf_idx] = rl[i];
@@ -56,6 +67,11 @@ void bit_packing::process() {
         for (i = buf_idx; i < BUS_WIDTH; i++) {
             buf[i] = 0;
         }
+        ready_o.write(false);
+        wait();
+        while (!ask_o.read()) wait();
         output.write(buf);
+        ready_o.write(true);
+        wait();
     }
 }

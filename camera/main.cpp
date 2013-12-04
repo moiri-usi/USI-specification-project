@@ -139,16 +139,18 @@ int sc_main (int argc , char *argv[]) {
     bit_packing bit_packing_1("bit_packing_1");
     bit_packing_1.input(data_rl_enc_out);
     bit_packing_1.ask_i(ask_rl_enc_out);
+    bit_packing_1.ask_o(ask_bit_pack_out);
     bit_packing_1.ready_i(ready_rl_enc_out);
+    bit_packing_1.ready_o(ready_bit_pack_out);
     bit_packing_1.clk(clk1);
-    bit_packing_1.output(data_bit_pack_out_ff);
+    bit_packing_1.output(data_bit_pack_out);
 
-    FF2P<sc_int<8> > ff2p1("ff2p1");
-    ff2p1.clk(clk1);
-    ff2p1.input(data_bit_pack_out_ff);
-    ff2p1.ask(ask_bit_pack_out);
-    ff2p1.ready(ready_bit_pack_out);
-    ff2p1.output(data_bit_pack_out);
+//    FF2P<sc_int<8> > ff2p1("ff2p1");
+//    ff2p1.clk(clk1);
+//    ff2p1.input(data_bit_pack_out_ff);
+//    ff2p1.ask(ask_bit_pack_out);
+//    ff2p1.ready(ready_bit_pack_out);
+//    ff2p1.output(data_bit_pack_out);
 
     P2FF<sc_int<8> > p2ff2("p2ff2");
     p2ff2.clk(clk1);
