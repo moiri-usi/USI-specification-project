@@ -5,7 +5,7 @@
 #include        "r2b.h"
 #include        "dct.h"
 #include        "quantize1.h"
-#include        "zz_enc.h"
+#include        "zz_enc1.h"
 #include        "rl_enc.h"
 #include        "P2FF.h"
 #include        "FF2P.h"
@@ -31,7 +31,7 @@ SC_MODULE(jpeg_enc) {
     r2b r2b_1;
     dct dct_1;
     quantize1 quant_1;
-    zz_enc zz_enc_1;
+    zz_enc1 zz_enc_1;
     rl_enc rl_enc_1;
 
     FF2P<float> ff2p_dct_quantize;
@@ -93,20 +93,25 @@ SC_MODULE(jpeg_enc) {
             quant_1.ready_o(bool_quantize_zz_ready);
             quant_1.ask_o(bool_quantize_zz_ask);
 
-            p2ff_quantize_zz.input(int_quantize_zz);
-            p2ff_quantize_zz.clk(clk);
-            p2ff_quantize_zz.output(quantize_zz_out);
-            p2ff_quantize_zz.ask(bool_quantize_zz_ask);
-            p2ff_quantize_zz.ready(bool_quantize_zz_ready);
+            //p2ff_quantize_zz.input(int_quantize_zz);
+            //p2ff_quantize_zz.clk(clk);
+            //p2ff_quantize_zz.output(quantize_zz_out);
+            //p2ff_quantize_zz.ask(bool_quantize_zz_ask);
+            //p2ff_quantize_zz.ready(bool_quantize_zz_ready);
 
-            zz_enc_1.input(quantize_zz_out);
-            zz_enc_1.output(zz_enc_out);
+            zz_enc_1.input(int_quantize_zz);
+            zz_enc_1.ask_i(bool_quantize_zz_ask);
+            zz_enc_1.ready_i(bool_quantize_zz_ready);
+            zz_enc_1.ask_o(bool_zz_rl_enc_ask);
+            zz_enc_1.ready_o(bool_zz_rl_enc_ready);
+            zz_enc_1.clk(clk);
+            zz_enc_1.output(int_zz_rl_enc);
 
-            ff2p_zz_rl_enc.input(zz_enc_out);
-            ff2p_zz_rl_enc.clk(clk);
-            ff2p_zz_rl_enc.ask(bool_zz_rl_enc_ask);
-            ff2p_zz_rl_enc.ready(bool_zz_rl_enc_ready);
-            ff2p_zz_rl_enc.output(int_zz_rl_enc);
+            //ff2p_zz_rl_enc.input(zz_enc_out);
+            //ff2p_zz_rl_enc.clk(clk);
+            //ff2p_zz_rl_enc.ask(bool_zz_rl_enc_ask);
+            //ff2p_zz_rl_enc.ready(bool_zz_rl_enc_ready);
+            //ff2p_zz_rl_enc.output(int_zz_rl_enc);
 
             p2ff_zz_rl_enc.input(int_zz_rl_enc);
             p2ff_zz_rl_enc.clk(clk);
