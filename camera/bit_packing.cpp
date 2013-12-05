@@ -32,7 +32,7 @@ void bit_packing::process() {
             case READ_VAL:
                 ask_i.write(true);
                 state = WAIT_READ_RL;
-                cout << "READ_VAL:       " << " ai:" << ask_i.read() << " ri:" << ready_i.read() << " ao:" << ask_o.read() << " ro:" << ready_o.read() << endl;
+                cout << "READ_VAL:       " << " ai:" << ask_i.read() << " ri:" << ready_i.read() << " ao:" << ask_o.read() << " ro:" << ready_o.read()  << " val:" << value << endl;
                 break;
             case WAIT_READ_RL:
                 if (ready_i.read()) {
@@ -63,7 +63,7 @@ void bit_packing::process() {
                     state = PREPARE_RL;
                     i = 0;
                 }
-                cout << "PREPARE_VAL:    " << " ai:" << ask_i.read() << " ri:" << ready_i.read() << " ao:" << ask_o.read() << " ro:" << ready_o.read() << " i:" << i << " buf_idx:" << buf_idx << endl;
+                cout << "PREPARE_VAL:    " << " ai:" << ask_i.read() << " ri:" << ready_i.read() << " ao:" << ask_o.read() << " ro:" << ready_o.read() << " i:" << i << " buf_idx:" << buf_idx << " rl:" << rl << endl;
                 break;
             case WAIT_WRITE_VAL:
                 if (ask_o.read()) {
@@ -121,7 +121,7 @@ void bit_packing::process() {
             case CHECK_END:
                 if (rl.read().to_int() < 63) {
                     ask_i.write(true);
-                    state = READ_VAL;
+                    state = WAIT_READ_VAL;
                 }
                 else {
                     for (i_temp = buf_idx; i_temp < BUS_WIDTH; i_temp++) {
@@ -146,7 +146,7 @@ void bit_packing::process() {
             case WRITE_END:
                 ask_i.write(true);
                 ready_o.write(false);
-                state=READ_VAL;
+                state = WAIT_READ_VAL;
                 cout << "WRITE_END:      " << " ai:" << ask_i.read() << " ri:" << ready_i.read() << " ao:" << ask_o.read() << " ro:" << ready_o.read() << endl;
                 break;
             default:
