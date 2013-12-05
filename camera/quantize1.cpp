@@ -16,8 +16,8 @@ void quantize1::process() {
                 ready_o.write(false);
                 value = input.read();
                 ask_i.write(false);
-                wait();
                 temp_out=(int)(floor(value/quantization[i*8+j]+0.5));
+                wait();
                 // cout << temp_out << " ";
                 while (!ask_o.read()) wait();
                 output.write(temp_out);
