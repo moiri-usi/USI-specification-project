@@ -3,7 +3,7 @@
 void quantize1::process() {
 
     int     i, j;
-    float   value;
+    sc_fixed<23, 13, SC_RND, SC_SAT>  value;
     int     temp_out;
 
     while (1) {
