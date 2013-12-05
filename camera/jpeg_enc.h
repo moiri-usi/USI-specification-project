@@ -24,7 +24,6 @@ SC_MODULE(jpeg_enc) {
     /* internal FIFOs */
     fifo_stat<int>      r2b_out;
     fifo_stat<float>    dct_out;
-    fifo_stat<int>      rl_enc_out;
 
     /* internal modules */
     r2b r2b_1;
@@ -47,7 +46,6 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_zz_rl_enc_ask;
     sc_signal<bool> bool_zz_rl_enc_ready;
 
-    FF2PC<int, sc_int<32> > ff2p_rl_enc_bit;
     sc_signal<sc_int<32> > int_rl_enc_bit;
     sc_signal<bool> bool_rl_enc_bit_ask;
     sc_signal<bool> bool_rl_enc_bit_ready;
@@ -60,7 +58,6 @@ SC_MODULE(jpeg_enc) {
         quant_1("quant_1",_quantization),
         zz_enc_1("zz_enc_1"),
         rl_enc_1("rl_enc_1"),
-        ff2p_rl_enc_bit("ff2p_rl_enc_bit"),
         bit_packing_1("bit_packing_1"),
         r2b_out("r2b_out",1),
         dct_out("dct_out",1)
@@ -99,13 +96,9 @@ SC_MODULE(jpeg_enc) {
             rl_enc_1.clk(clk);
             rl_enc_1.ask_i(bool_zz_rl_enc_ask);
             rl_enc_1.ready_i(bool_zz_rl_enc_ready);
-            rl_enc_1.output(rl_enc_out);
-
-            ff2p_rl_enc_bit.input(rl_enc_out);
-            ff2p_rl_enc_bit.clk(clk);
-            ff2p_rl_enc_bit.ask(bool_rl_enc_bit_ask);
-            ff2p_rl_enc_bit.ready(bool_rl_enc_bit_ready);
-            ff2p_rl_enc_bit.output(int_rl_enc_bit);
+            rl_enc_1.ask_o(bool_rl_enc_bit_ask);
+            rl_enc_1.ready_o(bool_rl_enc_bit_ready);
+            rl_enc_1.output(int_rl_enc_bit);
 
             bit_packing_1.input(int_rl_enc_bit);
             bit_packing_1.ask_i(bool_rl_enc_bit_ask);
