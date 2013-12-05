@@ -2,27 +2,30 @@
 #ifndef _QUANTIZE1
 #define _QUANTIZE1 
 #define SC_INCLUDE_FX
+#define INC_WITDH   4
+#define IN_WITDH_1  23
+#define IN_WITDH_2  13
+#define OUT_WITDH   9
 #include <systemc.h>
 #include "add2systemc.h"
 
 SC_MODULE(quantize1) {
 
-    sc_in<sc_fixed<23, 13, SC_RND, SC_SAT> > input;
-    sc_in<bool>         clk;
-    sc_in<bool>         ready_i;
-    sc_out<bool>        ready_o;
-    sc_out<bool>        ask_i;
-    sc_in<bool>         ask_o;
-    sc_in<bool>         reset;
-    sc_out<int>         output;
-    //sc_out<sc_int<8> >  output;
+    sc_in<sc_fixed<IN_WITDH_1, IN_WITDH_2, SC_RND, SC_SAT> > input;
+    sc_in<bool>                 clk;
+    sc_in<bool>                 ready_i;
+    sc_out<bool>                ready_o;
+    sc_out<bool>                ask_i;
+    sc_in<bool>                 ask_o;
+    sc_in<bool>                 reset;
+    sc_out<sc_int<OUT_WITDH> >  output;
 
     int* quantization;
     enum ctrl_state {RESET, WAITREAD, READ, WAITWRITE, CHECKLOOP, TERMINATION};
     sc_signal<ctrl_state> state;
-    sc_signal<int> i;
-    sc_signal<int> j;
-    sc_signal<int> temp_out;
+    sc_signal<sc_uint<INC_WITDH> >  i;
+    sc_signal<sc_uint<INC_WITDH> >  j;
+    sc_signal<sc_int<OUT_WITDH> >   temp_out;
 
     SC_HAS_PROCESS(quantize1);
 

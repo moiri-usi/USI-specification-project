@@ -2,9 +2,9 @@
 
 void quantize1::process() {
 
-    sc_fixed<23, 13, SC_RND, SC_SAT>  value;
-    int i_temp;
-    int j_temp;
+    sc_fixed<IN_WITDH_1, IN_WITDH_2, SC_RND, SC_SAT>  value;
+    sc_uint<INC_WITDH> i_temp;
+    sc_uint<INC_WITDH> j_temp;
 
     if (reset.read()) {
         i = 0;
@@ -21,9 +21,9 @@ void quantize1::process() {
                 state = CHECKLOOP;
                 break;
             case CHECKLOOP:
-                if (j >= 8) {
+                if (j >= (sc_uint<INC_WITDH>)8) {
                     j = 0;
-                    if (i >= 7) {
+                    if (i >= (sc_uint<INC_WITDH>)7) {
                         i = 0;
                     }
                     else {
@@ -41,9 +41,9 @@ void quantize1::process() {
                     value = input.read();
                     ask_i.write(false);
                     i_temp = i;
-                    i_temp = i_temp * 8;
                     j_temp = j;
-                    temp_out=(int)(floor(value/quantization[i_temp + j_temp]+0.5));
+                    temp_out=(sc_int<OUT_WITDH>)(floor(
+                                value/quantization[i_temp * 8 + j_temp]+0.5));
                     state = WAITWRITE;
                 }
                 break;

@@ -39,7 +39,7 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_dct_quantize_ask;
     sc_signal<bool> bool_dct_quantize_ready;
 
-    sc_signal<int>  int_quantize_zz;
+    sc_signal<sc_int<9> >  int_quantize_zz;
     sc_signal<bool> bool_quantize_zz_ask;
     sc_signal<bool> bool_quantize_zz_ready;
 
