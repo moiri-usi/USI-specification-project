@@ -20,6 +20,7 @@ SC_MODULE(jpeg_enc) {
     sc_in<bool>         clk;
     sc_in<bool>         ask;
     sc_out<bool>        ready;
+    sc_in<bool>         reset;
 
     /* internal FIFOs */
     fifo_stat<int>      r2b_out;
@@ -78,6 +79,7 @@ SC_MODULE(jpeg_enc) {
 
             quant_1.input(float_dct_quantize);
             quant_1.clk(clk);
+            quant_1.reset(reset);
             quant_1.ready_i(bool_dct_quantize_ready);
             quant_1.ask_i(bool_dct_quantize_ask);
             quant_1.output(int_quantize_zz);

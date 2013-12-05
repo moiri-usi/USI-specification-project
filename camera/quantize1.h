@@ -7,25 +7,29 @@
 
 SC_MODULE(quantize1) {
 
-    //my_fifo_in<sc_fixed<23,13> >    input;
     sc_in<sc_fixed<23, 13, SC_RND, SC_SAT> > input;
     sc_in<bool>         clk;
     sc_in<bool>         ready_i;
     sc_out<bool>        ready_o;
     sc_out<bool>        ask_i;
     sc_in<bool>         ask_o;
-    //my_fifo_in<float>    input;
-    //my_fifo_out<int>  output;
+    sc_in<bool>         reset;
     sc_out<int>         output;
+    //sc_out<sc_int<8> >  output;
 
     int* quantization;
+    enum ctrl_state {WAITREAD, READ, WAITWRITE, CHECKLOOP, TERMINATION};
+    sc_signal<ctrl_state> state;
+    sc_signal<int> i;
+    sc_signal<int> j;
+    sc_signal<int> temp_out;
 
     SC_HAS_PROCESS(quantize1);
 
     quantize1(sc_module_name name, int* _quantization):
         sc_module(name),
         quantization(_quantization) {
-            SC_THREAD(process);
+            SC_METHOD(process);
             sensitive << clk.pos();
         }
 
