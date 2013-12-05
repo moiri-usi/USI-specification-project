@@ -1,30 +1,38 @@
-/*  rl_enc1.h */ 
-#ifndef _RL_ENC1
-#define _RL_ENC1
+//*  rl_enc.h */
 #include <systemc.h>
 #include "add2systemc.h"
 
 SC_MODULE(rl_enc1) {
 
-    //my_fifo_in<int>   input;
-    sc_in<int>          input;
-    sc_in<bool>         ready_i;
-    sc_out<bool>        ready_o;
-    sc_in<bool>         clk;
-    sc_out<bool>        ask_i;
-    sc_in<bool>         ask_o;
-    //my_fifo_out<int>  output;
-    sc_out<sc_int<32> > output;
 
-    SC_HAS_PROCESS(rl_enc1);
+	// ports
 
-    rl_enc1(sc_module_name name):
-        sc_module(name) {
-            SC_THREAD(process);
-            sensitive << clk.pos();
-        }
+	sc_out< sc_int<32> >	output;
+	sc_in<bool>				ask_o;
+	sc_out<bool>			ready_o;
+	sc_in< sc_int<32> >		input;
+	sc_in<bool>				ready_i;
+	sc_out<bool>			ask_i;
+	sc_in<bool>				clk;
+	sc_in<bool>				reset;
 
-    void process();
+// variables as signals
+	enum		ctrl_state {RESET, READZIGZAG, WRITEDC, WAITFORZEROS, READZEROS, COUNTING , WRITECOUNT, WAITTOWRITE, TERMINATION};
+	sc_signal<ctrl_state>	state;//	ctrl_state	state;
+	sc_signal< sc_int<32> >	count;
+	sc_signal< sc_int<32> >	increment;
+	sc_signal< sc_int<32> >	value;
+	sc_signal< sc_int<32> >	value1;
+
+	void process();
+
+  SC_CTOR(rl_enc1){
+			SC_METHOD(process);
+			sensitive << clk.pos();
+  }
+
 };
 
-#endif
+
+
+

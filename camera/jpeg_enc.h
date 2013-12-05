@@ -43,7 +43,7 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_quantize_zz_ask;
     sc_signal<bool> bool_quantize_zz_ready;
 
-    sc_signal<int> int_zz_rl_enc;
+    sc_signal<sc_int<32> > int_zz_rl_enc;
     sc_signal<bool> bool_zz_rl_enc_ask;
     sc_signal<bool> bool_zz_rl_enc_ready;
 
@@ -96,6 +96,7 @@ SC_MODULE(jpeg_enc) {
 
             rl_enc_1.input(int_zz_rl_enc);
             rl_enc_1.clk(clk);
+            rl_enc_1.reset(reset);
             rl_enc_1.ask_i(bool_zz_rl_enc_ask);
             rl_enc_1.ready_i(bool_zz_rl_enc_ready);
             rl_enc_1.ask_o(bool_rl_enc_bit_ask);

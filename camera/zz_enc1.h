@@ -8,7 +8,7 @@
 SC_MODULE(zz_enc1) {
 
     sc_in<sc_int<IN_WIDTH> >    input;
-    sc_out<int>                 output;
+    sc_out<sc_int<32> >         output;
     sc_in<bool>                 ready_i;
     sc_out<bool>                ask_i;
     sc_out<bool>                ready_o;
