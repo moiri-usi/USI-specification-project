@@ -122,8 +122,8 @@ int sc_main (int argc , char *argv[]) {
     jpeg_enc jpeg_enc_1("jpeg_enc_1", quantization, MAXWIDTH);
     jpeg_enc_1.input(stimulus_dup1);
     jpeg_enc_1.parameters(parameters_dup1);
-    jpeg_enc_1.ask(ask_rl_enc_out);
-    jpeg_enc_1.ready(ready_rl_enc_out);
+    jpeg_enc_1.ask(ask_bit_pack_out);
+    jpeg_enc_1.ready(ready_bit_pack_out);
     jpeg_enc_1.output(data_bit_pack_out);
     jpeg_enc_1.clk(clk1);
 
