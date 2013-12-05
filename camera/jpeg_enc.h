@@ -108,6 +108,7 @@ SC_MODULE(jpeg_enc) {
             bit_packing_1.ask_o(ask);
             bit_packing_1.ready_o(ready);
             bit_packing_1.clk(clk);
+            bit_packing_1.reset(reset);
             bit_packing_1.output(output);
         }
 

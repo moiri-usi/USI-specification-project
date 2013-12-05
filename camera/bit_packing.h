@@ -16,15 +16,21 @@ SC_MODULE(bit_packing){
     sc_in<bool>                 clk;
     sc_out<bool>                ask_i;
     sc_in<bool>                 ask_o;
+    sc_in<bool>                 reset;
     sc_out<sc_int<BUS_WIDTH> >  output;
-    //my_fifo_in<int>                 input;
-    //my_fifo_out<sc_int<BUS_WIDTH> >  output;
+
+    enum ctrl_state {RESET, WAIT_READ_VAL, READ_VAL, WAIT_READ_RL, READ_RL,
+                WRITE_VAL, WAIT_WRITE_VAL, WRITE_RL, WAIT_WRITE_RL, CHECK_END,
+                WAIT_WRITE_END, WRITE_END};
+    sc_signal<ctrl_state> state;
+    sc_signal<int>  i;
+    sc_signal<int>  buf_idx;
 
     SC_HAS_PROCESS(bit_packing);
 
     bit_packing(sc_module_name name):
         sc_module(name) {
-            SC_THREAD(process);
+            SC_METHOD(process);
             sensitive << clk.pos();
         }
 
