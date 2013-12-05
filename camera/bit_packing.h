@@ -20,11 +20,14 @@ SC_MODULE(bit_packing){
     sc_out<sc_int<BUS_WIDTH> >  output;
 
     enum ctrl_state {RESET, WAIT_READ_VAL, READ_VAL, WAIT_READ_RL, READ_RL,
-                WRITE_VAL, WAIT_WRITE_VAL, WRITE_RL, WAIT_WRITE_RL, CHECK_END,
+                PREPARE_VAL, WAIT_WRITE_VAL, PREPARE_RL, WAIT_WRITE_RL, CHECK_END,
                 WAIT_WRITE_END, WRITE_END};
     sc_signal<ctrl_state> state;
-    sc_signal<int>  i;
-    sc_signal<int>  buf_idx;
+    sc_signal<int>                  i;
+    sc_signal<int>                  buf_idx;
+    sc_signal<sc_bv<VAL_WIDTH> >    value;
+    sc_signal<sc_bv<RL_WIDTH> >     rl;
+    sc_signal<sc_bv<BUS_WIDTH> >    buf;
 
     SC_HAS_PROCESS(bit_packing);
 
