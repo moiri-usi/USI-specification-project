@@ -129,6 +129,7 @@ int sc_main (int argc , char *argv[]) {
     jpeg_enc_1.ready(ready_bit_pack_out);
     jpeg_enc_1.output(data_bit_pack_out);
     jpeg_enc_1.clk(clk1);
+    jpeg_enc_1.reset(reset);
 
     P2FF<sc_int<8> > p2ff2("p2ff2");
     p2ff2.clk(clk1);
