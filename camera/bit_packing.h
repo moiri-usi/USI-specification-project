@@ -19,9 +19,8 @@ SC_MODULE(bit_packing){
     sc_in<bool>                 reset;
     sc_out<sc_int<BUS_WIDTH> >  output;
 
-    enum ctrl_state {RESET, WAIT_READ_VAL, READ_VAL, WAIT_READ_RL, READ_RL,
-                PREPARE_VAL, WAIT_WRITE_VAL, PREPARE_RL, WAIT_WRITE_RL, CHECK_END,
-                WAIT_WRITE_END, WRITE_END};
+    enum ctrl_state {RESET, WAIT_READ_VAL, READ_VAL, WAIT_READ_RL,
+                PREPARE_VAL, WAIT_WRITE_VAL, PREPARE_RL, WAIT_WRITE_RL};
     sc_signal<ctrl_state> state;
     sc_signal<int>                  i;
     sc_signal<int>                  buf_idx;
