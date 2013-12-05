@@ -17,11 +17,12 @@ SC_MODULE(rl_enc_RTL) {
 	sc_in<bool>				reset;
 
 // variables as signals
-	enum		ctrl_state {RESET, READZIGZAG, WRITEDC, READZEROS, COUNTING , WRITECOUNT, WRITEVALUE, TERMINATION};
+	enum		ctrl_state {RESET, READZIGZAG, WRITEDC, WAITFORZEROS, READZEROS, COUNTING , WRITECOUNT, WAITTOWRITE, TERMINATION};
 	sc_signal<ctrl_state>	state;//	ctrl_state	state;
 	sc_signal< sc_int<32> >	count;
 	sc_signal< sc_int<32> >	increment;
 	sc_signal< sc_int<32> >	value;
+	sc_signal< sc_int<32> >	value1;
 
 	void process_RTL();
 
@@ -31,5 +32,7 @@ SC_MODULE(rl_enc_RTL) {
   }
 
 };
+
+
 
 
