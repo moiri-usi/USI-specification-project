@@ -9,9 +9,12 @@ SC_MODULE(rl_enc1) {
     //my_fifo_in<int>   input;
     sc_in<int>          input;
     sc_in<bool>         ready_i;
+    sc_out<bool>        ready_o;
     sc_in<bool>         clk;
     sc_out<bool>        ask_i;
-    my_fifo_out<int>  output;
+    sc_in<bool>         ask_o;
+    //my_fifo_out<int>  output;
+    sc_out<sc_int<32> > output;
 
     SC_HAS_PROCESS(rl_enc1);
 
