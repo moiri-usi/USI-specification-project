@@ -12,7 +12,6 @@ void quantize1::process() {
         ask_i.write(false);
         ready_o.write(false);
         state.write(RESET);
-        cout << "RESET      ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
     }
     else {
         switch (state) {
@@ -24,9 +23,8 @@ void quantize1::process() {
             case CHECKLOOP:
                 if (j >= 8) {
                     j = 0;
-                    if (i >= 8) {
+                    if (i >= 7) {
                         i = 0;
-                        cout << "START_OVER" << endl;
                     }
                     else {
                         i_temp = i;
@@ -36,7 +34,6 @@ void quantize1::process() {
                 ask_i.write(true);
                 ready_o.write(false);
                 state = WAITREAD;
-                cout << "CHECKLOOP  ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
                 break;
             case WAITREAD:
                 if (ready_i.read()) {
@@ -49,29 +46,16 @@ void quantize1::process() {
                     temp_out=(int)(floor(value/quantization[i_temp + j_temp]+0.5));
                     state = WAITWRITE;
                 }
-                cout << "WAITREAD   ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
-                break;
-            case READ:
-                state = WAITWRITE;
-                cout << "READ       ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
                 break;
             case WAITWRITE:
                 if (ask_o.read()) {
                     output.write(temp_out);
                     ask_i.write(true);
-                    //ask_i.write(false);
                     ready_o.write(true);
                     j_temp = j;
                     j = j_temp + 1;
                     state = CHECKLOOP;
-                    //state = TERMINATION;
                 }
-                cout << "WAITWRITE  ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
-                break;
-            case TERMINATION:
-                state = CHECKLOOP;
-                ask_i.write(true);
-                ready_o.write(false);
                 break;
             deafult:
                 state.write(CHECKLOOP);
@@ -79,27 +63,5 @@ void quantize1::process() {
                 ready_o.write(false);
         }
     }
-   // while (1) {
-   //     ask_i.write(true);
-   //     ready_o.write(false);
-   //     wait();
-   //     for(i=0;i<8;i++) {
-   //         for (j=0; j<8;j++){
-   //             while (!ready_i.read()) wait();
-   //             ready_o.write(false);
-   //             value = input.read();
-   //             ask_i.write(false);
-   //             temp_out=(int)(floor(value/quantization[i*8+j]+0.5));
-   //             wait();
-   //             // cout << temp_out << " ";
-   //             while (!ask_o.read()) wait();
-   //             output.write(temp_out);
-   //             ask_i.write(true);
-   //             ready_o.write(true);
-   //             wait();
-   //         }
-   //         // cout << endl;
-   //     }
-   // }
 }
 
