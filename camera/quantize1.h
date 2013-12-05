@@ -18,7 +18,7 @@ SC_MODULE(quantize1) {
     //sc_out<sc_int<8> >  output;
 
     int* quantization;
-    enum ctrl_state {WAITREAD, READ, WAITWRITE, CHECKLOOP, TERMINATION};
+    enum ctrl_state {RESET, WAITREAD, READ, WAITWRITE, CHECKLOOP, TERMINATION};
     sc_signal<ctrl_state> state;
     sc_signal<int> i;
     sc_signal<int> j;

@@ -11,27 +11,31 @@ void quantize1::process() {
         j = 0;
         ask_i.write(false);
         ready_o.write(false);
-        state.write(CHECKLOOP);
+        state.write(RESET);
         cout << "RESET      ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
     }
     else {
         switch (state) {
-            case CHECKLOOP:
+            case RESET:
+                ask_i.write(true);
                 ready_o.write(false);
-                if (i >= 8) {
+                state = CHECKLOOP;
+                break;
+            case CHECKLOOP:
+                if (j >= 8) {
                     j = 0;
-                    i = 0;
-                    cout << "START_OVER" << endl;
-                }
-                else {
-                    if(j >= 8) {
-                        j = 0;
+                    if (i >= 8) {
+                        i = 0;
+                        cout << "START_OVER" << endl;
+                    }
+                    else {
                         i_temp = i;
                         i = i_temp + 1;
                     }
-                    ask_i.write(true);
-                    state = WAITREAD;
                 }
+                ask_i.write(true);
+                ready_o.write(false);
+                state = WAITREAD;
                 cout << "CHECKLOOP  ai:" << ask_i << " ri:" << ready_i << " ao:" << ask_o << " ro:" << ready_o << endl;
                 break;
             case WAITREAD:
@@ -54,7 +58,7 @@ void quantize1::process() {
             case WAITWRITE:
                 if (ask_o.read()) {
                     output.write(temp_out);
-                    //ask_i.write(true);
+                    ask_i.write(true);
                     //ask_i.write(false);
                     ready_o.write(true);
                     j_temp = j;
