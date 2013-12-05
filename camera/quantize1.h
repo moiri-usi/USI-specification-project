@@ -1,13 +1,14 @@
 /*  quantize1.h */ 
 #ifndef _QUANTIZE1
 #define _QUANTIZE1 
+#define SC_INCLUDE_FX
 #include <systemc.h>
 #include "add2systemc.h"
 
 SC_MODULE(quantize1) {
 
     //my_fifo_in<sc_fixed<23,13> >    input;
-    sc_in<float>        input;
+    sc_in<sc_fixed<23, 13, SC_RND, SC_SAT> > input;
     sc_in<bool>         clk;
     sc_in<bool>         ready_i;
     sc_out<bool>        ready_o;

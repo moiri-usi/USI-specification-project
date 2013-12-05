@@ -34,8 +34,8 @@ SC_MODULE(jpeg_enc) {
     rl_enc1 rl_enc_1;
     bit_packing bit_packing_1;
 
-    FF2P<float> ff2p_dct_quantize;
-    sc_signal<float>  float_dct_quantize;
+    FF2PC<float, sc_fixed<23, 13, SC_RND, SC_SAT> > ff2p_dct_quantize;
+    sc_signal<sc_fixed<23, 13, SC_RND, SC_SAT> >  float_dct_quantize;
     sc_signal<bool> bool_dct_quantize_ask;
     sc_signal<bool> bool_dct_quantize_ready;
 
