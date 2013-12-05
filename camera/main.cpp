@@ -78,7 +78,6 @@ int sc_main (int argc , char *argv[]) {
     fifo_stat<int>  result_dup2("result_dup2",1);
     fifo_stat<int>  data_rl_enc_out_ff("data_rl_enc_out_ff",1);
     fifo_stat<sc_int<8> >  data_bit_pack_out_ff("data_bit_pack_out_ff",1);
-    fifo_stat<sc_int<8> >  data_bit_pack_out_ff_ff("data_bit_pack_out_ff_ff",1);
     fifo_stat<int>  data_bit_unpack_out_ff("data_bit_unpack_out_ff",1);
 
     // processing of command-line arguments
@@ -120,46 +119,23 @@ int sc_main (int argc , char *argv[]) {
     fork_param.out[1](parameters_dup2);
     fork_param.out[2](parameters_dup3);
 
-    jpeg_enc_pr jpeg_enc_1("jpeg_enc_1", quantization, MAXWIDTH);
+    jpeg_enc jpeg_enc_1("jpeg_enc_1", quantization, MAXWIDTH);
     jpeg_enc_1.input(stimulus_dup1);
     jpeg_enc_1.parameters(parameters_dup1);
     jpeg_enc_1.ask(ask_rl_enc_out);
     jpeg_enc_1.ready(ready_rl_enc_out);
-    jpeg_enc_1.output(data_rl_enc_out);
+    jpeg_enc_1.output(data_bit_pack_out);
     jpeg_enc_1.clk(clk1);
-
-//    P2FFC<int, sc_int<32> > p2ff1("p2ff1");
-//    p2ff1.clk(clk1);
-//    p2ff1.input(data_rl_enc_out);
-//    p2ff1.ask(ask_rl_enc_out);
-//    p2ff1.ready(ready_rl_enc_out);
-//    p2ff1.output(data_rl_enc_out_ff);
-
-    bit_packing bit_packing_1("bit_packing_1");
-    bit_packing_1.input(data_rl_enc_out);
-    bit_packing_1.ask_i(ask_rl_enc_out);
-    bit_packing_1.ask_o(ask_bit_pack_out);
-    bit_packing_1.ready_i(ready_rl_enc_out);
-    bit_packing_1.ready_o(ready_bit_pack_out);
-    bit_packing_1.clk(clk1);
-    bit_packing_1.output(data_bit_pack_out);
-
-//    FF2P<sc_int<8> > ff2p1("ff2p1");
-//    ff2p1.clk(clk1);
-//    ff2p1.input(data_bit_pack_out_ff);
-//    ff2p1.ask(ask_bit_pack_out);
-//    ff2p1.ready(ready_bit_pack_out);
-//    ff2p1.output(data_bit_pack_out);
 
     P2FF<sc_int<8> > p2ff2("p2ff2");
     p2ff2.clk(clk1);
     p2ff2.input(data_bit_pack_out);
     p2ff2.ask(ask_bit_pack_out);
     p2ff2.ready(ready_bit_pack_out);
-    p2ff2.output(data_bit_pack_out_ff_ff);
+    p2ff2.output(data_bit_pack_out_ff);
 
     bit_unpacking bit_unpacking_1("bit_unpacking_1");
-    bit_unpacking_1.input(data_bit_pack_out_ff_ff);
+    bit_unpacking_1.input(data_bit_pack_out_ff);
     bit_unpacking_1.output(data_bit_unpack_out_ff);
 
     FF2PC<int, sc_int<32> > ff2p2("ff2p2");
