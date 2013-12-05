@@ -6,7 +6,7 @@ void rl_dec_RTL::process_RTL() {
 
 	sc_int<32> value2; // temporary value
 
-	if (!reset.read() == true) {
+	if (reset.read() == true) {
 		state.write(RESET);
 		ready_o.write(false);
 		ask_i.write(false);

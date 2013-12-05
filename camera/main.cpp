@@ -15,6 +15,7 @@
 #include    "jpeg_enc.h"
 
 #include    "bit_unpacking.h"
+#include    "genreset.h"
 
 #define MAXWIDTH 1024
 #define MAXWIDTH8 ((MAXWIDTH +7)/8 * 8)
@@ -62,8 +63,6 @@ int sc_main (int argc , char *argv[]) {
     sc_signal<sc_int<8> >      data_bit_pack_out;
     sc_signal<bool>     reset;
 
-    reset = true;
-
     //  definition of FIFO queues
     fifo_stat<int>  stimulus("stimulus",1);
     fifo_stat<int>  parameters("parameters",3);
@@ -103,6 +102,10 @@ int sc_main (int argc , char *argv[]) {
     }
 
     //  definition of modules
+    // setting up reset: first 5 pulses reset is set
+    genreset genreset_1("genreset_1", 5);
+    genreset_1.reset(reset);
+    genreset_1.clk(clk1);
 
     src src1("src1", inputfile, MAXWIDTH);
     src1.output(stimulus);
