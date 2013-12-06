@@ -32,17 +32,15 @@ void zz_enc1::process() {
             wait();
         }
 
-        for (j=0; j < 64 ; j++){
+        for (i=0; i < 64 ; i++){
             ready_o.write(false);
             wait();
             while (!ask_o.read()) wait();
-            block[j] = temp_block[zig_zag[j]];
-            output.write (block[j]);
+            block[i] = temp_block[zig_zag[i]];
+            output.write (block[i]);
             ready_o.write(true);
             wait();
         }
-        ready_o.write(false);
-        wait();
     }
 }
 
