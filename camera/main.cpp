@@ -42,6 +42,14 @@ int sc_main (int argc , char *argv[]) {
         49, 64, 78, 87,103,121,120,101,
         72, 92, 95, 98,112,100,103, 99};
 
+    sc_int<9> zig_zag[64] = {0,1,8,16,9,2,3,10 ,
+        17,24,32,25,18,11,4,5 ,
+        12,19, 26, 33, 40, 48, 41, 34,
+        27, 20, 13, 6, 7, 14, 21, 28,
+        35, 42, 49, 56, 57, 50, 43, 36,
+        29, 22, 15, 23, 30, 37, 44, 51,
+        58, 59, 52, 45, 38, 31, 39, 46,
+        53, 60, 61, 54, 47, 55, 62, 63};
 
     // definition of default files
     const char* inputfile       = "datain.pgm";
@@ -122,7 +130,7 @@ int sc_main (int argc , char *argv[]) {
     fork_param.out[1](parameters_dup2);
     fork_param.out[2](parameters_dup3);
 
-    jpeg_enc jpeg_enc_1("jpeg_enc_1", quantization, MAXWIDTH);
+    jpeg_enc jpeg_enc_1("jpeg_enc_1", quantization, zig_zag, MAXWIDTH);
     jpeg_enc_1.input(stimulus_dup1);
     jpeg_enc_1.parameters(parameters_dup1);
     jpeg_enc_1.ask(ask_bit_pack_out);

@@ -19,15 +19,19 @@ SC_MODULE(zz_enc1) {
     sc_in<bool>             reset;
 
     // variables as signals
+    sc_int<9>*  zig_zag;
     enum        ctrl_state {RESET, READZIGZAG, WAITREAD, WRITEZIGZAG, WAITWRITE};
     sc_signal<ctrl_state>   state;//    ctrl_state  state;
-    sc_signal< sc_int<32> > i;
+    sc_signal< sc_uint<7> > i;
     sc_signal< sc_int<9> >  block[64];
 
     void process();
 
+    SC_HAS_PROCESS(zz_enc1);
 
-    SC_CTOR(zz_enc1){
+    zz_enc1(sc_module_name name, sc_int<9>* _zig_zag):
+        sc_module(name),
+        zig_zag(_zig_zag) {
         SC_METHOD(process);
         sensitive << clk.pos();
     }

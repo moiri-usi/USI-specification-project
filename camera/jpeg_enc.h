@@ -51,13 +51,14 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_rl_enc_bit_ask;
     sc_signal<bool> bool_rl_enc_bit_ready;
 
-    jpeg_enc(sc_module_name _name, int* _quantization, int _maxwidth):
+    jpeg_enc(sc_module_name _name, int* _quantization, sc_int<9>* _zig_zag,
+            int _maxwidth):
         sc_module(_name),
         r2b_1("r2b_1",_maxwidth),
         dct_1("dct_1"),
         ff2p_dct_quantize("ff2p_dct_quantize_"),
         quant_1("quant_1",_quantization),
-        zz_enc_1("zz_enc_1"),
+        zz_enc_1("zz_enc_1", _zig_zag),
         rl_enc_1("rl_enc_1"),
         bit_packing_1("bit_packing_1"),
         r2b_out("r2b_out",1),
