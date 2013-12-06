@@ -9,7 +9,7 @@ SC_MODULE(zz_enc1) {
 
     // ports
 
-    sc_out< sc_int<32> >    output;
+    sc_out< sc_int<9> >     output;
     sc_in<bool>             ask_o;
     sc_out<bool>            ready_o;
     sc_in< sc_int<9> >      input;
@@ -21,7 +21,7 @@ SC_MODULE(zz_enc1) {
     // variables as signals
     sc_int<9>*  zig_zag;
     enum        ctrl_state {RESET, READZIGZAG, WAITREAD, WRITEZIGZAG, WAITWRITE};
-    sc_signal<ctrl_state>   state;//    ctrl_state  state;
+    sc_signal<ctrl_state>   state;
     sc_signal< sc_uint<7> > i;
     sc_signal< sc_int<9> >  block[64];
 

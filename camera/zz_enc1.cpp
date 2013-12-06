@@ -56,9 +56,9 @@ void zz_enc1::process() {
             case WAITWRITE:
                 if(ask_o.read()==true){
                     i_temp = i;
-                    output.write((sc_int<32>)block[zig_zag[i_temp]]);
-                    ask_i.write(false); // check it out!!
-                    ready_o.write(true);//count to zeros
+                    output.write((sc_int<9>)block[zig_zag[i_temp]]);
+                    ask_i.write(false);
+                    ready_o.write(true);
                     i_temp++;
                     i = i_temp;
                     state.write(WRITEZIGZAG);

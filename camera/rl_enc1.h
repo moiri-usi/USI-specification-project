@@ -10,7 +10,7 @@ SC_MODULE(rl_enc1) {
 	sc_out< sc_int<32> >	output;
 	sc_in<bool>				ask_o;
 	sc_out<bool>			ready_o;
-	sc_in< sc_int<32> >		input;
+	sc_in< sc_int<9> >		input;
 	sc_in<bool>				ready_i;
 	sc_out<bool>			ask_i;
 	sc_in<bool>				clk;
