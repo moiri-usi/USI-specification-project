@@ -7,6 +7,7 @@
 #define BUS_WIDTH 8
 #define RL_WIDTH  7
 #define VAL_WIDTH 9
+#define CNT_WIDTH 4
 
 SC_MODULE(bit_packing){
 
@@ -22,8 +23,8 @@ SC_MODULE(bit_packing){
     enum ctrl_state {RESET, WAIT_READ_VAL, READ_VAL, WAIT_READ_RL,
                 PREPARE_VAL, WAIT_WRITE_VAL, PREPARE_RL, WAIT_WRITE_RL};
     sc_signal<ctrl_state> state;
-    sc_signal<int>                  i;
-    sc_signal<int>                  buf_idx;
+    sc_signal<sc_uint<CNT_WIDTH> >  i;
+    sc_signal<sc_uint<CNT_WIDTH> >  buf_idx;
     sc_signal<sc_bv<VAL_WIDTH> >    value;
     sc_signal<sc_bv<RL_WIDTH> >     rl;
     sc_signal<sc_bv<BUS_WIDTH> >    buf;

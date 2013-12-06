@@ -1,8 +1,8 @@
 #include "bit_packing.h"
 
 void bit_packing::process() {
-    int i_temp;
-    int buf_idx_temp;
+    sc_uint<CNT_WIDTH> i_temp;
+    sc_uint<CNT_WIDTH> buf_idx_temp;
     sc_bv<BUS_WIDTH> buf_temp;
 
     if (reset.read()) {
@@ -39,10 +39,10 @@ void bit_packing::process() {
                 break;
             case PREPARE_VAL:
                 ready_o.write(false);
-                if ((i < VAL_WIDTH) || (buf_idx >= BUS_WIDTH)) {
-                    if (buf_idx < BUS_WIDTH) {
+                if ((i.read() < VAL_WIDTH) || (buf_idx.read() >= BUS_WIDTH)) {
+                    if (buf_idx.read() < BUS_WIDTH) {
                         buf_temp = buf;
-                        buf_temp[buf_idx] = value.read()[i];
+                        buf_temp[buf_idx.read()] = value.read()[i.read()];
                         buf = buf_temp;
                         buf_idx_temp = buf_idx;
                         buf_idx = buf_idx_temp + 1;
@@ -69,10 +69,10 @@ void bit_packing::process() {
                 break;
             case PREPARE_RL:
                 ready_o.write(false);
-                if ((i < RL_WIDTH) || (buf_idx >= BUS_WIDTH)) {
-                    if (buf_idx < BUS_WIDTH) {
+                if ((i.read() < RL_WIDTH) || (buf_idx.read() >= BUS_WIDTH)) {
+                    if (buf_idx.read() < BUS_WIDTH) {
                         buf_temp = buf;
-                        buf_temp[buf_idx] = rl.read()[i];
+                        buf_temp[buf_idx.read()] = rl.read()[i.read()];
                         buf = buf_temp;
                         buf_idx_temp = buf_idx;
                         buf_idx = buf_idx_temp + 1;
