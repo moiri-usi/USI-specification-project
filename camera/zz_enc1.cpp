@@ -2,62 +2,52 @@
 
 void zz_enc1::process() {
 
-    int     i, j, k, l;
-    int     temp_block[64];                     
-    int     block[64];
+	int		i, j;
+	int		temp_block[64];
+	int		block[64];
 
-    while(1) {
-        ask_i.write(true);
-        ready_o.write(false);
-        wait();
-        //read in the blocks for 8 lines
-        for ( i = 0 ; i < 8 ; i ++) {
-            for ( j = 0 ; j < 8 ; j++ ) {
-                ask_i.write(true);
-                wait();
-                while (!ready_i.read()) wait();
-                temp_block[8 * i + j ]= input.read();
-                ask_i.write(false);
-                wait();
-            }
-        }
 
-        i = 0 , j = -1 , k = 0;
+	int zig_zag[64] = {0,1,8,16,9,2,3,10 ,
+			    		17,24,32,25,18,11,4,5 ,
+			    		12,19, 26, 33, 40, 48, 41, 34,
+			    		27, 20, 13, 6, 7, 14, 21, 28,
+			    		35, 42, 49, 56, 57, 50, 43, 36,
+			    		29, 22, 15, 23, 30, 37, 44, 51,
+			    		58, 59, 52, 45, 38, 31, 39, 46,
+			    		53, 60, 61, 54, 47, 55, 62, 63};
 
-        for ( l = 0 ; l < 4 ; l++ ) {
-            for ( j++ ; i >= 0 ; j++ , i-- ) {
-                block[k] = temp_block[i*8+j];
-                k++;
-            }
+	while(1) {
+		//read in the blocks for 8 lines
+		ask_i.write(true);
+		ready_o.write(false);wait();
 
-            for ( i++ ; j >= 0 ; j-- , i++ ) {
-                block[k] = temp_block[i*8+j];
-                k++;
-            }
-        }
 
-        for ( l = 0 ; l < 3 ; l++ ) {
-            for ( i-- , j += 2 ; j < 8 ; j++ , i-- ) {
-                block[k] = temp_block[i*8+j];
-                k++;
-            }
-            for ( j-- , i += 2 ; i < 8 ; j-- , i++ ) {
-                block[k] = temp_block[i*8+j];
-                k++;
-            }
-        }
+		for ( i = 0 ; i < 64 ; i ++) {
+			ask_i.write(true);wait();
 
-        i-- , j += 2;
-        block[k] = temp_block[i*8+j];
+			while (!ready_i.read()) wait();
 
-        for ( i = 0 ; i < 64 ; ++i ) {
-            ready_o.write(false);
-            wait();
-            while (!ask_o.read()) wait();
-            output.write (block[i]);
-            ready_o.write(true);
-            wait();
-        }
-    }
+			ready_o.write(false);
+	    	temp_block[i]= input.read();
+			ask_i.write(false);
+			wait();
+
+		}
+
+	    for (j=0; j < 64 ; j++){
+	    	ready_o.write(false);wait();
+
+	    	while (!ask_o.read())wait();
+
+	    	block[j]= temp_block[zig_zag[j]];
+	    	output.write (block[j]);
+	    	ready_o.write(true);
+	    	wait();
+
+	    }
+
+	    ready_o.write(false);wait();
+
+	}
 }
 
