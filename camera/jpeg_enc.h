@@ -92,6 +92,7 @@ SC_MODULE(jpeg_enc) {
             zz_enc_1.ask_o(bool_zz_rl_enc_ask);
             zz_enc_1.ready_o(bool_zz_rl_enc_ready);
             zz_enc_1.clk(clk);
+            zz_enc_1.reset(reset);
             zz_enc_1.output(int_zz_rl_enc);
 
             rl_enc_1.input(int_zz_rl_enc);
