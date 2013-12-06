@@ -32,62 +32,63 @@ void zz_enc1::process_() {
                 ask_i.write(true);      //indicate that we want to read in next cycle
                 ready_o.write(false);       //indicate that we do not write data in this cycle
                 state.write(READZIGZAG);
-                i.write(0);
+                i = 0;
                 break;
 
             case READZIGZAG:
 
-                if (i.read() < ((sc_int<32>)(64))){
+                if (i < ((sc_int<32>)(64))){
                     ask_i.write(true);
                     state.write(WAITREAD);
                 }
                 else{
                     state.write(WRITEZIGZAG);
-                    i.write(0);
+                    i = 0;
                 }
-                cout << "READZIGZAG: a_i:"<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << endl;
+//                cout << "READZIGZAG:     a_i:"<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << " i:" << i << endl;
                 break;
 
             case WAITREAD:
                 if (ready_i.read()==true){
                     ready_o.write(false);
-                    i_temp = i.read();
+                    i_temp = i;
                     temp_block[i_temp] = input.read();
                     ask_i.write(false);
                     i_temp++;
-                    i.write(i_temp);
+                    i = i_temp;
                     state.write(READZIGZAG);
 
                 }
-                cout << "WAITREAD: a_i: "<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << endl;
+//                cout << "WAITREAD:       a_i:"<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << " i:" << i << endl;
                 break;
 
             case WRITEZIGZAG:
-                if (i.read() < ((sc_int<32>)(64))){
+                if (i < ((sc_int<32>)(64))){
                     ready_o.write(false);
                     state.write(WAITWRITE);
                 }
                 else{
                     ready_o.write(false);
-                    i.write(0);
+                    i = 0;
                     ask_i.write(true);
                     state.write(READZIGZAG);
                 }
-                cout << "WRITEZIGZAG: a_i: "<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << endl;
+//                cout << "WRITEZIGZAG:    a_i:"<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << " i:" << i << " out:" << output << endl;
                 break;
 
             case WAITWRITE:
                 if(ask_o.read()==true){
-                    output.write(temp_block[zig_zag[i.read()]]);
+                    i_temp = i;
+                    output.write(temp_block[zig_zag[i_temp]]);
+                    cout << temp_block[zig_zag[i_temp]] << endl;;
                     ask_i.write(false); // check it out!!
                     ready_o.write(true);//count to zeros
-                    i_temp = i.read();
                     i_temp++;
-                    i.write(i_temp);
+                    i = i_temp;
                     state.write(WRITEZIGZAG);
 
                 }
-                cout << "WAITWRITE: a_i: "<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << endl;
+//                cout << "WAITWRITE:      a_i:"<< ask_i << " r_i:"<< ready_i << " A_o:"<< ask_o << " R_o:"<< ready_o << " i:" << i << endl;
                 break;
 
 
