@@ -24,6 +24,7 @@ SC_MODULE(zz_enc1) {
     sc_signal<ctrl_state>   state;
     sc_signal< sc_uint<7> > i;
     sc_signal< sc_int<9> >  block[64];
+    sc_signal< sc_int<9> >  zz_val;
 
     void process();
 

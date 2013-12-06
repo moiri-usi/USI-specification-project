@@ -43,6 +43,8 @@ void zz_enc1::process() {
             case WRITEZIGZAG:
                 if (i < ((sc_uint<7>)(64))){
                     ready_o.write(false);
+                    i_temp = i;
+                    zz_val = zig_zag[i_temp];
                     state.write(WAITWRITE);
                 }
                 else{
@@ -56,7 +58,7 @@ void zz_enc1::process() {
             case WAITWRITE:
                 if(ask_o.read()==true){
                     i_temp = i;
-                    output.write((sc_int<9>)block[zig_zag[i_temp]]);
+                    output.write((sc_int<9>)block[zz_val.read()]);
                     ask_i.write(false);
                     ready_o.write(true);
                     i_temp++;

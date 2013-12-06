@@ -21,11 +21,14 @@ SC_MODULE(quantize1) {
     sc_out<sc_int<OUT_WITDH> >  output;
 
     sc_fixed<32,2>* quantization;
-    enum ctrl_state {RESET, WAITREAD, READ, WAITWRITE, CHECKLOOP, TERMINATION};
+    enum ctrl_state {RESET, WAITREAD_P1, WAITREAD_P2, WAITREAD, READ,
+        WAITWRITE, CHECKLOOP, TERMINATION};
     sc_signal<ctrl_state> state;
     sc_signal<sc_uint<INC_WITDH> >  i;
     sc_signal<sc_uint<INC_WITDH> >  j;
     sc_signal<sc_int<OUT_WITDH> >   temp_out;
+    sc_signal<sc_fixed<32, 2> >     quant_val;
+    sc_signal<sc_fixed<23,13> >     prod_val;
 
     SC_HAS_PROCESS(quantize1);
 

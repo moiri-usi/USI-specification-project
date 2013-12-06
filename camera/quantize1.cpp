@@ -11,15 +11,10 @@ void quantize1::process() {
         j = 0;
         ask_i.write(false);
         ready_o.write(false);
-        state.write(RESET);
+        state.write(CHECKLOOP);
     }
     else {
         switch (state) {
-            case RESET:
-                ask_i.write(true);
-                ready_o.write(false);
-                state = CHECKLOOP;
-                break;
             case CHECKLOOP:
                 if (j >= (sc_uint<INC_WITDH>)8) {
                     j = 0;
@@ -31,26 +26,33 @@ void quantize1::process() {
                         i = i_temp + 1;
                     }
                 }
-                ask_i.write(true);
+                ask_i.write(false);
                 ready_o.write(false);
-                state = WAITREAD;
+                state = WAITREAD_P1;
                 break;
-            case WAITREAD:
+            case WAITREAD_P1:
+                i_temp = i;
+                j_temp = j;
+                quant_val = quantization[i_temp * 8 + j_temp];
+                ask_i.write(true);
+                state = WAITREAD_P2;
+                break;
+            case WAITREAD_P2:
                 if (ready_i.read()) {
-                    ready_o.write(false);
                     value = input.read();
                     ask_i.write(false);
-                    i_temp = i;
-                    j_temp = j;
-                    temp_out=(sc_int<OUT_WITDH>)(floor(
-                                value*quantization[i_temp * 8 + j_temp]+0.5));
-                    state = WAITWRITE;
+                    prod_val = quant_val*value;
+                    state = WAITREAD;
                 }
+                break;
+            case WAITREAD:
+                temp_out=(sc_int<OUT_WITDH>)(floor(prod_val + 0.5));
+                state = WAITWRITE;
                 break;
             case WAITWRITE:
                 if (ask_o.read()) {
                     output.write(temp_out);
-                    ask_i.write(true);
+                    ask_i.write(false);
                     ready_o.write(true);
                     j_temp = j;
                     j = j_temp + 1;
@@ -59,7 +61,7 @@ void quantize1::process() {
                 break;
             deafult:
                 state.write(CHECKLOOP);
-                ask_i.write(true);
+                ask_i.write(false);
                 ready_o.write(false);
         }
     }

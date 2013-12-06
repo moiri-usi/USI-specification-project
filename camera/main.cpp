@@ -75,7 +75,7 @@ int sc_main (int argc , char *argv[]) {
     const char* typefile        = "types.txt";
 
     //  definition of clock
-    sc_clock    clk1("clk1",1, SC_NS);
+    sc_clock    clk1("clk1",12, SC_NS);
 
     //  definition of signals
     sc_signal<bool>     ask_rl_enc_out;
