@@ -47,7 +47,7 @@ SC_MODULE(jpeg_enc) {
     sc_signal<bool> bool_zz_rl_enc_ask;
     sc_signal<bool> bool_zz_rl_enc_ready;
 
-    sc_signal<sc_int<32> > int_rl_enc_bit;
+    sc_signal<sc_int<9> > int_rl_enc_bit;
     sc_signal<bool> bool_rl_enc_bit_ask;
     sc_signal<bool> bool_rl_enc_bit_ready;
 

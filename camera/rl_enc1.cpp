@@ -2,8 +2,8 @@
 
 void rl_enc1::process(){
 
-    sc_int<32> value2;
-    sc_int<32> value3;
+    sc_int<9>   count_temp;
+    sc_uint<7>  i_temp;
 
     if (reset.read() == true ){
         state.write(RESET);
@@ -15,16 +15,16 @@ void rl_enc1::process(){
 
             case RESET: 
                 ask_i.write(true);      //indicate that we want to read in next cycle
-                ready_o.write(false);       //indicate that we do not write data in this cycle
+                ready_o.write(false);   //indicate that we do not write data in this cycle
                 state.write(READZIGZAG);
                 count.write(0);
-                increment.write(0);
+                i.write(0);
                 break;
 
             case READZIGZAG:
 
                 ready_o.write(false);
-                increment.write(1);
+                i.write(1);
 
                 if (ready_i.read()==true){
                     value.write(input.read());
@@ -61,11 +61,11 @@ void rl_enc1::process(){
             case WAITFORZEROS: //wait for succesfull write AC/DC value
 
                 ready_o.write(false);
-                if (increment.read() < ((sc_int<32>)(64))){
+                if (i.read() < ((sc_int<32>)(64))){
                     ask_i.write(true);
-                    value3 = increment.read();
-                    value3++;
-                    increment.write(value3);
+                    i_temp = i.read();
+                    i_temp++;
+                    i.write(i_temp);
 
                     state.write(READZEROS);
                 }
@@ -93,9 +93,9 @@ void rl_enc1::process(){
             case COUNTING:
 
                 if (value.read()== (sc_int<32>)(0)){
-                    value2 = count.read();
-                    value2++;
-                    count.write(value2);
+                    count_temp = count.read();
+                    count_temp++;
+                    count.write(count_temp);
                     state.write(WAITFORZEROS);
                 }
                 else{

@@ -10,7 +10,7 @@
 
 SC_MODULE(bit_packing){
 
-    sc_in<sc_int<32> >          input;
+    sc_in<sc_int<9> >           input;
     sc_in<bool>                 ready_i;
     sc_out<bool>                ready_o;
     sc_in<bool>                 clk;
