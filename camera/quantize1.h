@@ -20,7 +20,7 @@ SC_MODULE(quantize1) {
     sc_in<bool>                 reset;
     sc_out<sc_int<OUT_WITDH> >  output;
 
-    int* quantization;
+    sc_fixed<32,2>* quantization;
     enum ctrl_state {RESET, WAITREAD, READ, WAITWRITE, CHECKLOOP, TERMINATION};
     sc_signal<ctrl_state> state;
     sc_signal<sc_uint<INC_WITDH> >  i;
@@ -29,7 +29,7 @@ SC_MODULE(quantize1) {
 
     SC_HAS_PROCESS(quantize1);
 
-    quantize1(sc_module_name name, int* _quantization):
+    quantize1(sc_module_name name, sc_fixed<32, 2>* _quantization):
         sc_module(name),
         quantization(_quantization) {
             SC_METHOD(process);

@@ -43,7 +43,7 @@ void quantize1::process() {
                     i_temp = i;
                     j_temp = j;
                     temp_out=(sc_int<OUT_WITDH>)(floor(
-                                value/quantization[i_temp * 8 + j_temp]+0.5));
+                                value*quantization[i_temp * 8 + j_temp]+0.5));
                     state = WAITWRITE;
                 }
                 break;
